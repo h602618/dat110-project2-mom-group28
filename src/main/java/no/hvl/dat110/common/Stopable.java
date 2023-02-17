@@ -1,36 +1,30 @@
 package no.hvl.dat110.common;
 
 public abstract class Stopable extends Thread {
+    private boolean stop = false;
+    protected String name;
 
-	private boolean stop = false;
-	protected String name;
-	
-	public Stopable(String name) {
-		this.name = name;
-	}
-	
-	public synchronized void doStop() {
-		stop = true;
-	}
+    public Stopable(String name) {
+        this.name = name;
+    }
 
-	private synchronized boolean doCont() {
-		return !stop;
+    public synchronized void doStop() {
+        stop = true;
+    }
 
-	}
+    private synchronized boolean doCont() {
+        return !stop;
+    }
 
-	public abstract void doProcess();
-	
-	public void run() {
+    public abstract void doProcess();
 
-		Logger.log(name + " running");
-		
-		while (doCont()) {
+    public void run() {
+        Logger.log(name + " running");
 
-			doProcess();
-			
-		}
+        while (doCont()) {
+            doProcess();
+        }
 
-		Logger.log(name + " stopping");
-
-	}
+        Logger.log(name + " stopping");
+    }
 }

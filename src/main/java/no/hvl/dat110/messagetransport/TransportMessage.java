@@ -3,53 +3,35 @@ package no.hvl.dat110.messagetransport;
 import java.util.Arrays;
 
 public class TransportMessage {
+    private byte[] payload;
 
-	private byte[] payload;
+    public TransportMessage(byte[] payload) {
+        if (payload == null || (payload.length + 1 > MessageConfig.SEGMENTSIZE)) {
+            throw new RuntimeException("Message: invalid payload");
+        }
 
-	public TransportMessage(byte[] payload) {
-		// TODO: check for length within boundary
-		if (payload == null || (payload.length + 1 > MessageConfig.SEGMENTSIZE)) {
-			throw new RuntimeException("Message: invalid payload");
-		}
-		
-		this.payload = payload; 
-	}
+        this.payload = payload;
+    }
 
-	public TransportMessage() {
-		super();
-	}
+    public TransportMessage() {
+        super();
+    }
 
-	public byte[] getData() {
-		return this.payload; 
-	}
+    public byte[] getData() {
+        return this.payload;
+    }
 
-	public byte[] encapsulate() {
-		
-		byte[] encoded;
-		
-		// TODO
-		// encapulate/encode the payload of the message
-		
-		encoded = new byte[MessageConfig.SEGMENTSIZE];
+    public byte[] encapsulate() {
+        byte[] encoded = new byte[MessageConfig.SEGMENTSIZE];
+        encoded[0] = (byte) (payload.length);
 
-		encoded[0] =  (byte)(payload.length);
+        System.arraycopy(payload, 0, encoded, 1, payload.length);
 
-		for (int i = 0;i<payload.length;i++) {
-			encoded[i+1] = payload[i];
-		}
-		
-		return encoded;
-		
-	}
+        return encoded;
+    }
 
-	public void decapsulate(byte[] received) {
-
-		// TODO
-		// decapsulate data in received and put in payload
-		
-		int len = received[0];
-		
-		payload = Arrays.copyOfRange(received,1,len+1);
-		
-	}
+    public void decapsulate(byte[] received) {
+        int len = received[0];
+        payload = Arrays.copyOfRange(received, 1, len + 1);
+    }
 }

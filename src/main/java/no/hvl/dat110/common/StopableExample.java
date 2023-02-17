@@ -1,29 +1,24 @@
 package no.hvl.dat110.common;
 
 public class StopableExample extends Stopable {
+    private int i = 0;
 
-	public StopableExample() {
-		super("stopable thread");
-	}
+    public StopableExample() {
+        super("stopable thread");
+    }
 
-	private int i = 0;
+    @Override
+    public void doProcess() {
+        System.out.println("stopable thread working:" + i);
 
-	@Override
-	public void doProcess() {
+        try {
+            // simulate some processing time
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            System.out.println("Stopable thread " + ex.getMessage());
+            ex.printStackTrace();
+        }
 
-		System.out.println("stopable thread working:" + i);
-
-		try {
-
-			// simulate some processing time
-			Thread.sleep(1000);
-
-		} catch (InterruptedException ex) {
-
-			System.out.println("Stopable thread " + ex.getMessage());
-			ex.printStackTrace();
-		}
-		
-		i++;
-	}
+        i++;
+    }
 }
