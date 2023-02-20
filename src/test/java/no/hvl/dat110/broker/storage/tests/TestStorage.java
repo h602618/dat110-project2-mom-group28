@@ -14,7 +14,7 @@ public class TestStorage {
     private static final String TESTTOPIC = "testtopic";
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         storage = new Storage();
     }
 
